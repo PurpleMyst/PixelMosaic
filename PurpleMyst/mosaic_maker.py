@@ -30,7 +30,6 @@ def find_neighbors(width, height, x, y):
 
             nx = x + xc
             ny = y + yc
-
             if 0 <= nx < width and 0 <= ny < height:
                 yield (nx, ny)
 
@@ -69,9 +68,10 @@ def make_mosaic(width=512, height=512, color_amount=6):
 
 
 def save_image(mosaic):
-    image = Image.new("RGB", (len(mosaic[0]), len(mosaic)))
-
+    image_size = (len(mosaic[0]), len(mosaic))
+    image = Image.new("RGB", image_size)
     pixels = image.load()
+
     for y, row in enumerate(mosaic):
         for x, col in enumerate(row):
             pixels[x, y] = PALLETE[col - 1]
@@ -82,12 +82,12 @@ def save_image(mosaic):
 def main():
     small_mosaic = make_mosaic(TILE_WIDTH, TILE_HEIGHT, TILE_COLORS)
     big_mosaic = [[0 for _ in range(FULL_WIDTH)] for _ in range(FULL_HEIGHT)]
+    all_colors = set(range(1, FULL_COLORS + 1))
 
     for y in range(FULL_HEIGHT):
         for x in range(FULL_WIDTH):
             big_mosaic[y][x] = small_mosaic[y % TILE_HEIGHT][x % TILE_WIDTH]
 
-    all_colors = set(range(1, FULL_COLORS + 1))
     for _ in range(RANDOMIZER_PASSES):
         for y in range(FULL_HEIGHT):
             for x in range(FULL_WIDTH):
