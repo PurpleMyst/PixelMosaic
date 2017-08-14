@@ -54,18 +54,18 @@ def make_mosaic(width=512, height=512, color_amount=6):
             pixels[y][x] = color
 
             if set().union(*pixels) == all_colors:
-                raise StopIteration
+                return pixels
 
             for nx, ny in neighbors:
-                recurse(nx, ny)
+                solution = recurse(nx, ny)
+
+                if solution is not None:
+                    return solution
 
         # Unset the pixel after we're done if we didn't find any solutions.
         pixels[y][x] = 0
 
-    try:
-        recurse(0, 0)
-    except StopIteration:
-        return pixels
+    return recurse(0, 0)
 
 
 def save_image(mosaic):
