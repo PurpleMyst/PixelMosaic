@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import random
+
 from PIL import Image
 
 FULL_WIDTH = FULL_HEIGHT = 512
@@ -23,19 +24,25 @@ assert len(PALLETE) >= FULL_COLORS, "Not enough colors specified!"
 
 
 def find_neighbors(width, height, x, y):
-    for yc in range(-1, 2):
-        for xc in range(-1, 2):
+    neighbors = []
+
+    for yc in (-1, 0, +1):
+        for xc in (-1, 0, +1):
             if xc == 0 and yc == 0:
                 continue
 
             nx = x + xc
             ny = y + yc
             if 0 <= nx < width and 0 <= ny < height:
-                yield (nx, ny)
+                neighbors.append((nx, ny))
+
+    return neighbors
 
 
 def find_neighbor_colors(pixels, neighbors):
-    return {pixels[ny][nx] for nx, ny in neighbors} - {0}
+    s = {pixels[ny][nx] for nx, ny in neighbors}
+    s.discard(0)
+    return s
 
 
 def make_mosaic(width=512, height=512, color_amount=6):
@@ -46,7 +53,7 @@ def make_mosaic(width=512, height=512, color_amount=6):
         if pixels[y][x] != 0:
             return
 
-        neighbors = tuple(find_neighbors(width, height, x, y))
+        neighbors = find_neighbors(width, height, x, y)
         available_colors = all_colors - find_neighbor_colors(pixels, neighbors)
 
         for color in available_colors:

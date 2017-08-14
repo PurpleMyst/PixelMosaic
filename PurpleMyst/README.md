@@ -17,3 +17,15 @@ randomness.
 To run the script, you will just need a copy of
 [Python **3**](https://www.python.org/downloads) and the
 [Pillow module](http://pillow.readthedocs.io/en/4.2.x/installation.html#basic-installation)
+
+There is also a C++ version of the same algorith included, which has no
+dependencies but outputs a NetPBM. To compile it, only a C++11 compliant compiler is required. 
+An example compilation and usage, with the outputs of some commands removed for
+brevity, is:
+
+```bash
+$ clang++ -std=c++11 mosaic_maker.cpp -o mosaic_maker.out
+$ ./mosaic_maker.out > mosaic.pbm
+$ feh --force-aliasing mosaic.pbm  # Shows the image in feh, which supports PBM images.
+$ convert mosaic.pbm mosaic.png  # It's possible to convert the PBM to a PNG using the ImageMagick CLI.
+```
