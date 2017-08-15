@@ -18,8 +18,12 @@ To run the script, you will just need a copy of
 [Python **3**](https://www.python.org/downloads) and the
 [Pillow module](http://pillow.readthedocs.io/en/4.2.x/installation.html#basic-installation)
 
-There is also a C++ version of the same algorith included, which has no
-dependencies but outputs a NetPBM. To compile it, only a C++11 compliant compiler is required. 
+There is also a C++ version of a simpler algorithm included.  
+The algorithm used by it randomly assigns each pixel to a valid color it could
+be, and it does this four times. This is basically only doing the last step of
+the Python algorithm.  
+It has no dependencies but it outputs a NetPBM.  
+To compile it, only a C++11 compliant compiler is required.  
 An example compilation and usage, with the outputs of some commands removed for
 brevity, is:
 
