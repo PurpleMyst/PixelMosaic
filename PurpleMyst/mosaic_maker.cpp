@@ -10,6 +10,8 @@ constexpr size_t FULL_COLORS = 6;
 constexpr size_t TILE_SIDE = 4;
 constexpr size_t TILE_COLORS = 4;
 
+constexpr size_t RANDOMIZER_PASSES = 4;
+
 constexpr uint8_t BLACK[3] = {0, 0, 0};
 
 constexpr uint8_t PALLETE[FULL_COLORS][3] = {
@@ -155,17 +157,19 @@ FullImage solve() {
     std::default_random_engine generator;
     std::uniform_int_distribution<uint8_t> distribution(1, FULL_COLORS);
 
-    for (ssize_t y = FULL_SIDE - 1; y >= 0; --y) {
-        for (ssize_t x = FULL_SIDE - 1; x >= 0; --x) {
-            auto neighbors = full.find_neighbors(x, y);
-            auto available_colors = full.find_available_colors(neighbors);
+    for (ssize_t i = RANDOMIZER_PASSES; i > 0; --i) {
+        for (ssize_t y = FULL_SIDE - 1; y >= 0; --y) {
+            for (ssize_t x = FULL_SIDE - 1; x >= 0; --x) {
+                auto neighbors = full.find_neighbors(x, y);
+                auto available_colors = full.find_available_colors(neighbors);
 
-            uint8_t  color;
-            do {
-                color = distribution(generator);
-            } while (!available_colors.count(color));
+                uint8_t  color;
+                do {
+                    color = distribution(generator);
+                } while (!available_colors.count(color));
 
-            full.set_pixel(x, y, color);
+                full.set_pixel(x, y, color);
+            }
         }
     }
 
